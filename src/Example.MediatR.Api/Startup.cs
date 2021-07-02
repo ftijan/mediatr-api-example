@@ -1,13 +1,11 @@
+using Example.MediatR.Api.Context;
+using Example.MediatR.Api.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Example.MediatR.Api
 {
@@ -17,9 +15,11 @@ namespace Example.MediatR.Api
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddDbContext<ApiContext>(opt => opt.UseInMemoryDatabase("ApiDb"));
 
             services.AddMediatR(typeof(Startup));
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -29,6 +29,11 @@ namespace Example.MediatR.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // Add test data
+            var serviceScope = app.ApplicationServices.CreateScope();
+            var context = serviceScope.ServiceProvider.GetService<ApiContext>();
+            context.AddTestData();
 
             app.UseRouting();            
 

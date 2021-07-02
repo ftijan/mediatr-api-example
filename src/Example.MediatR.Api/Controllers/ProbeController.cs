@@ -6,7 +6,7 @@ namespace Example.MediatR.Api.Controllers
     [ApiController]
     public class ProbeController : ControllerBase
     {
-        [HttpGet("/")]
+        [HttpGet]
         public IActionResult Get()
         {
             return Ok();

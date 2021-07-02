@@ -23,7 +23,10 @@ namespace Example.MediatR.Api.Cqrs
 
         public async Task<Item> Handle(GetItemRequest request, CancellationToken cancellationToken)
         {
-            var item = await _apiContext.Items.FindAsync(request.Id);
+            var item = await _apiContext.Items.FindAsync(new object[] 
+            {
+                request.Id 
+            }, cancellationToken);
 
             return item;
         }

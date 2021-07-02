@@ -1,4 +1,5 @@
 ﻿using Example.MediatR.Api.Cqrs;
+using Example.MediatR.Api.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,18 +22,9 @@ namespace Example.MediatR.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id, CancellationToken cancellationToken)
         {
-            var item = await _mediator.Send(new GetItemRequest { Id = id });
+            var item = await _mediator.Send(new GetItemRequest { Id = id }, cancellationToken);
 
-            if(item == null)
-            {
-                return NotFound();
-            }
-
-            return new JsonResult(item)
-            {
-                StatusCode = 200,
-                ContentType = "application/json"
-            };
+            return item.CreatePayloadResult();
         }
     }
 }

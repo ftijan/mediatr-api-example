@@ -1,5 +1,7 @@
 ﻿using Example.MediatR.Api.Context;
 using Example.MediatR.Api.Context.Models;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Example.MediatR.Api.Utils
 {
@@ -23,6 +25,15 @@ namespace Example.MediatR.Api.Utils
             context.Items.AddRange(testItem1, testItem2);            
 
             context.SaveChanges();
+        }
+
+        internal static void AddTestData(this IApplicationBuilder applicationBuilder)
+        {
+            var serviceScope = applicationBuilder.ApplicationServices.CreateScope();
+
+            var context = serviceScope.ServiceProvider.GetService<ApiContext>();
+
+            context.AddTestData();
         }
     }
 }

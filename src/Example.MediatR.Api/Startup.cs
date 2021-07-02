@@ -28,12 +28,10 @@ namespace Example.MediatR.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
 
-            // Add test data
-            var serviceScope = app.ApplicationServices.CreateScope();
-            var context = serviceScope.ServiceProvider.GetService<ApiContext>();
-            context.AddTestData();
+                // Add test data
+                app.AddTestData();
+            }            
 
             app.UseRouting();            
 
